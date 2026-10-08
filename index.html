@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Serverless peer-to-peer file transfer using WebRTC"
+    >
+
+    <title>P2P File Drop</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="app-header">
+
+        <div class="container header-content">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    ↔
+                </div>
+
+                <div>
+
+                    <h1>
+                        P2P File Drop
+                    </h1>
+
+                    <p>
+                        Direct browser-to-browser file transfer
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="header-status">
+
+                <span
+                    class="status-dot"
+                    id="headerStatusDot"
+                ></span>
+
+                <span id="headerConnectionStatus">
+                    Disconnected
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="container">
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="hero-section">
+
+            <div class="hero-badge">
+                🔒 Privacy-first • No account required
+            </div>
+
+
+            <h2>
+                Send files directly<br>
+                from browser to browser.
+            </h2>
+
+
+            <p>
+                Transfer files using WebRTC without uploading
+                them to a traditional cloud server.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CONNECTION GUIDE
+        ================================================== -->
+
+        <section class="guide-section">
+
+            <div class="section-heading">
+
+                <span class="step-number">
+                    1
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Connect your devices
+                    </h3>
+
+                    <p>
+                        Follow the steps below to establish a
+                        peer-to-peer connection.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <ol class="connection-guide">
+
+                <li>
+
+                    <div class="guide-icon">
+                        1
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Choose your role
+                        </strong>
+
+                        <p>
+                            One device should select Send and
+                            the other should select Receive.
+                        </p>
+
+                    </div>
+
+                </li>
+
+
+                <li>
+
+                    <div class="guide-icon">
+                        2
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Exchange connection codes
+                        </strong>
+
+                        <p>
+                            Copy the generated offer and answer
+                            codes between the two devices.
+                        </p>
+
+                    </div>
+
+                </li>
+
+
+                <li>
+
+                    <div class="guide-icon">
+                        3
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Start transferring
+                        </strong>
+
+                        <p>
+                            Once connected, select files and
+                            transfer them directly.
+                        </p>
+
+                    </div>
+
+                </li>
+
+            </ol>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ROLE SELECTION
+        ================================================== -->
+
+        <section class="role-section">
+
+            <div class="section-heading">
+
+                <span class="step-number">
+                    2
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Choose your role
+                    </h3>
+
+                    <p>
+                        Select what this browser should do.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="role-selector">
+
+                <!-- SENDER -->
+
+                <button
+                    id="sendRoleButton"
+                    class="role-card active"
+                    type="button"
+                >
+
+                    <span class="role-icon">
+                        ↑
+                    </span>
+
+                    <span class="role-title">
+                        Send
+                    </span>
+
+                    <span class="role-description">
+                        I want to send files
+                    </span>
+
+                </button>
+
+
+                <!-- RECEIVER -->
+
+                <button
+                    id="receiveRoleButton"
+                    class="role-card"
+                    type="button"
+                >
+
+                    <span class="role-icon">
+                        ↓
+                    </span>
+
+                    <span class="role-title">
+                        Receive
+                    </span>
+
+                    <span class="role-description">
+                        I want to receive files
+                    </span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CONNECTION AREA
+        ================================================== -->
+
+        <section class="connection-section">
+
+
+            <!-- =================================================
+                 SEND PANEL
+            ================================================== -->
+
+            <div
+                id="sendPanel"
+                class="connection-panel active-panel"
+            >
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            SENDER
+                        </span>
+
+                        <h3>
+                            Create connection
+                        </h3>
+
+                        <p>
+                            Generate an offer code and send it
+                            to the receiver.
+                        </p>
+
+                    </div>
+
+
+                    <span class="panel-icon">
+                        ↑
+                    </span>
+
+                </div>
+
+
+                <!-- CREATE OFFER -->
+
+                <button
+                    id="createOfferButton"
+                    class="primary-button"
+                    type="button"
+                >
+                    Create Offer
+                </button>
+
+
+                <!-- OFFER -->
+
+                <div class="code-group">
+
+                    <div class="code-header">
+
+                        <label for="offerCode">
+                            Offer Code
+                        </label>
+
+
+                        <button
+                            id="copyOfferButton"
+                            class="copy-button"
+                            type="button"
+                            disabled
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <textarea
+                        id="offerCode"
+                        class="code-box"
+                        readonly
+                        placeholder="Your offer code will appear here..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- ANSWER -->
+
+                <div class="code-group">
+
+                    <div class="code-header">
+
+                        <label for="answerCodeSender">
+                            Receiver Answer
+                        </label>
+
+                    </div>
+
+
+                    <textarea
+                        id="answerCodeSender"
+                        class="code-box"
+                        placeholder="Paste the receiver's answer code here..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- COMPLETE CONNECTION -->
+
+                <button
+                    id="connectSenderButton"
+                    class="secondary-button"
+                    type="button"
+                    disabled
+                >
+                    Complete Connection
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RECEIVE PANEL
+            ================================================== -->
+
+            <div
+                id="receivePanel"
+                class="connection-panel"
+                hidden
+            >
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            RECEIVER
+                        </span>
+
+                        <h3>
+                            Join connection
+                        </h3>
+
+                        <p>
+                            Paste the sender's offer and create
+                            an answer code.
+                        </p>
+
+                    </div>
+
+
+                    <span class="panel-icon">
+                        ↓
+                    </span>
+
+                </div>
+
+
+                <!-- SENDER OFFER -->
+
+                <div class="code-group">
+
+                    <div class="code-header">
+
+                        <label for="offerCodeReceiver">
+                            Sender Offer
+                        </label>
+
+                    </div>
+
+
+                    <textarea
+                        id="offerCodeReceiver"
+                        class="code-box"
+                        placeholder="Paste the sender's offer code here..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- CREATE ANSWER -->
+
+                <button
+                    id="createAnswerButton"
+                    class="primary-button"
+                    type="button"
+                    disabled
+                >
+                    Create Answer
+                </button>
+
+
+                <!-- ANSWER -->
+
+                <div class="code-group">
+
+                    <div class="code-header">
+
+                        <label for="answerCode">
+                            Answer Code
+                        </label>
+
+
+                        <button
+                            id="copyAnswerButton"
+                            class="copy-button"
+                            type="button"
+                            disabled
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <textarea
+                        id="answerCode"
+                        class="code-box"
+                        readonly
+                        placeholder="Your answer code will appear here..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CONNECTION STATUS
+        ================================================== -->
+
+        <section class="status-section">
+
+            <div class="status-card">
+
+                <div class="status-main">
+
+                    <span
+                        id="connectionStatusIcon"
+                        class="status-icon"
+                    >
+                        ○
+                    </span>
+
+
+                    <div>
+
+                        <span class="status-label">
+                            CONNECTION STATUS
+                        </span>
+
+
+                        <!-- JS expects connectionStatus -->
+
+                        <div
+                            id="connectionStatus"
+                            class="connection-status"
+                            role="status"
+                        >
+                            Ready
+                        </div>
+
+
+                        <!-- JS expects connectionStatusText -->
+
+                        <div
+                            id="connectionStatusText"
+                            class="status-status-text"
+                            aria-live="polite"
+                        >
+                            Ready
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- JS expects statusMessage -->
+
+                <div
+                    id="statusMessage"
+                    class="status-details"
+                    aria-live="polite"
+                >
+                    Create or join a connection to begin.
+                </div>
+
+
+                <!-- Compatibility ID -->
+
+                <div
+                    id="connectionDetails"
+                    class="status-details"
+                >
+                    Create or join a connection to begin.
+                </div>
+
+            </div>
+
+
+            <!-- TROUBLESHOOTING -->
+
+            <div
+                id="troubleshooting"
+                class="troubleshooting"
+                hidden
+            >
+
+                <strong>
+                    Connection troubleshooting
+                </strong>
+
+
+                <ul>
+
+                    <li>
+                        Make sure both codes were copied completely.
+                    </li>
+
+                    <li>
+                        Keep both browser tabs open during connection.
+                    </li>
+
+                    <li>
+                        Some networks may require STUN/TURN support.
+                    </li>
+
+                    <li>
+                        Try the same-device demo mode if available.
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             TRANSFER AREA
+        ================================================== -->
+
+        <section
+            id="transferSection"
+            class="transfer-section"
+            hidden
+        >
+
+            <div class="section-heading">
+
+                <span class="step-number">
+                    3
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Transfer files
+                    </h3>
+
+                    <p>
+                        Your peer connection is ready.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- FILE PICKER -->
+
+            <div class="file-picker">
+
+                <label
+                    for="fileInput"
+                    class="file-drop-area"
+                >
+
+                    <span class="upload-icon">
+                        ↑
+                    </span>
+
+
+                    <strong>
+                        Select files
+                    </strong>
+
+
+                    <span>
+                        Choose one or multiple files
+                    </span>
+
+
+                    <small>
+                        Your files stay on your devices.
+                    </small>
+
+                </label>
+
+
+                <input
+                    id="fileInput"
+                    type="file"
+                    multiple
+                    hidden
+                >
+
+            </div>
+
+
+            <!-- FILE LIST -->
+
+            <div
+                id="fileList"
+                class="file-list"
+            ></div>
+
+
+            <!-- SEND FILES BUTTON -->
+
+            <button
+                id="sendFilesButton"
+                class="primary-button"
+                type="button"
+            >
+                Send Files
+            </button>
+
+
+            <!-- RECEIVED FILES -->
+
+            <div
+                id="receivedFiles"
+                class="received-files"
+            >
+
+                <h4>
+                    Received Files
+                </h4>
+
+            </div>
+
+
+            <!-- TRANSFER STATUS -->
+
+            <div
+                id="transferStatus"
+                class="transfer-status"
+                aria-live="polite"
+            >
+                Ready to transfer.
+            </div>
+
+
+            <!-- TRANSFER PROGRESS -->
+
+            <div
+                id="transferProgressContainer"
+                class="transfer-progress"
+                hidden
+            >
+
+                <div class="progress-header">
+
+                    <span>
+                        Transfer progress
+                    </span>
+
+
+                    <output id="progressText">
+                        0%
+                    </output>
+
+                </div>
+
+
+                <progress
+                    id="transferProgress"
+                    value="0"
+                    max="100"
+                >
+                </progress>
+
+
+                <div class="transfer-stats">
+
+                    <span>
+                        Speed:
+                        <strong id="transferSpeed">
+                            —
+                        </strong>
+                    </span>
+
+
+                    <span>
+                        Remaining:
+                        <strong id="transferEta">
+                            —
+                        </strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             TEXT CHAT
+        ================================================== -->
+
+        <section
+            id="chatSection"
+            class="chat-section"
+            hidden
+        >
+
+            <div class="section-heading">
+
+                <span class="step-number">
+                    4
+                </span>
+
+
+                <div>
+
+                    <h3>
+                        Peer messages
+                    </h3>
+
+                    <p>
+                        Send a quick text message to the
+                        connected device.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHAT MESSAGES -->
+
+            <div
+                id="chatMessages"
+                class="chat-messages"
+            >
+
+                <div class="empty-chat">
+                    No messages yet.
+                </div>
+
+            </div>
+
+
+            <!-- CHAT INPUT -->
+
+            <div class="chat-input-area">
+
+                <input
+                    id="messageInput"
+                    type="text"
+                    placeholder="Type a message..."
+                    autocomplete="off"
+                >
+
+
+                <button
+                    id="sendMessageButton"
+                    class="primary-button"
+                    type="button"
+                >
+                    Send
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             DEMO MODE
+        ================================================== -->
+
+        <section class="demo-section">
+
+            <div class="demo-card">
+
+                <div>
+
+                    <span class="demo-label">
+                        SAME-DEVICE DEMO
+                    </span>
+
+
+                    <h3>
+                        Test without another device
+                    </h3>
+
+
+                    <p>
+                        Open two tabs and use BroadcastChannel
+                        to simulate a peer-to-peer connection.
+                    </p>
+
+
+                    <div
+                        id="demoStatus"
+                        class="demo-status"
+                        aria-live="polite"
+                    >
+                        Demo mode is inactive.
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="demoModeButton"
+                    class="secondary-button"
+                    type="button"
+                >
+                    Start Demo Mode
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CONNECTION LOG
+        ================================================== -->
+
+        <section class="log-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h3>
+                        Connection log
+                    </h3>
+
+
+                    <p>
+                        Technical events from this session.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="clearLogButton"
+                    class="text-button"
+                    type="button"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+
+            <div
+                id="connectionLog"
+                class="connection-log"
+                aria-live="polite"
+            >
+
+                <div class="log-entry">
+
+                    <span class="log-time">
+                        --:--:--
+                    </span>
+
+                    <span>
+                        Ready to create a connection.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="app-footer">
+
+        <div class="container">
+
+            <p>
+                P2P File Drop • Browser-to-browser transfer
+            </p>
+
+
+            <p>
+                No account • No application server • WebRTC
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        type="module"
+        src="js/main.js"
+    ></script>
+
+</body>
+
+</html>
